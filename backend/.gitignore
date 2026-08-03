@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+data/app.db
+data/secret_key.txt
+data/tmp_imports/
+.pytest_cache/
