@@ -52,6 +52,7 @@ class AccountCreate(BaseModel):
 
 
 class AccountUpdate(BaseModel):
+    scope: Scope | None = None
     account_type: AccountType | None = None
     asset_class: AssetClass | None = None
     institution_name: str | None = None

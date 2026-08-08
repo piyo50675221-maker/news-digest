@@ -100,7 +100,10 @@ def update_account(
     db: Session = Depends(get_db),
 ):
     account = _get_account_or_404(db, account_id, user)
-    for field, value in payload.model_dump(exclude_unset=True).items():
+    updates = payload.model_dump(exclude_unset=True)
+    if "scope" in updates:
+        account.owner_user_id = user.id if updates["scope"] == "personal" else None
+    for field, value in updates.items():
         setattr(account, field, value)
     db.commit()
     db.refresh(account)

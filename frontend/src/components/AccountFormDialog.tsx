@@ -12,6 +12,7 @@ interface Props {
 }
 
 export function AccountFormDialog({ scope, account, onClose, onSaved }: Props) {
+  const [formScope, setFormScope] = useState<Scope>(account?.scope ?? scope)
   const [accountType, setAccountType] = useState<AccountType>(account?.account_type ?? 'bank')
   const [assetClass, setAssetClass] = useState<AssetClass>(
     account?.asset_class ?? DEFAULT_ASSET_CLASS_FOR_TYPE['bank'],
@@ -37,6 +38,7 @@ export function AccountFormDialog({ scope, account, onClose, onSaved }: Props) {
     try {
       if (account) {
         await accountsApi.update(account.id, {
+          scope: formScope,
           account_type: accountType,
           asset_class: assetClass,
           institution_name: institutionName,
@@ -72,6 +74,20 @@ export function AccountFormDialog({ scope, account, onClose, onSaved }: Props) {
         <h2 className="mb-4 text-lg font-semibold">
           {account ? '口座を編集' : `${scope === 'personal' ? '個人' : '家計'}の口座を追加`}
         </h2>
+
+        {account && (
+          <label className="mb-3 block text-sm">
+            所属
+            <select
+              className="mt-1 w-full rounded border border-gray-300 px-2 py-1 dark:border-gray-700 dark:bg-gray-800"
+              value={formScope}
+              onChange={(e) => setFormScope(e.target.value as Scope)}
+            >
+              <option value="personal">個人</option>
+              <option value="household">家計</option>
+            </select>
+          </label>
+        )}
 
         <div className="mb-3 grid grid-cols-2 gap-3">
           <label className="text-sm">
