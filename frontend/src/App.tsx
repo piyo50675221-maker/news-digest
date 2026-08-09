@@ -5,6 +5,8 @@ import { AppShell } from './components/AppShell'
 import { LoginPage } from './pages/LoginPage'
 import { AccountsPage } from './pages/AccountsPage'
 import { PortfolioPage } from './pages/PortfolioPage'
+import { InsurancePage } from './pages/InsurancePage'
+import { InheritancePage } from './pages/InheritancePage'
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { user, loading } = useApp()
@@ -26,6 +28,8 @@ export default function App() {
       >
         <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/accounts" element={<AccountsPage />} />
+        <Route path="/insurance" element={<InsurancePage />} />
+        <Route path="/inheritance" element={<InheritancePage />} />
         <Route path="/" element={<Navigate to="/portfolio" replace />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

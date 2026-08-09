@@ -78,3 +78,66 @@ export interface NetWorthHistoryPoint {
 export interface PortfolioHistory {
   points: NetWorthHistoryPoint[]
 }
+
+export interface Insurance {
+  id: number
+  subject_user_id: number | null
+  subject_display_name: string | null
+  insurance_type: string
+  company_name: string
+  product_name: string | null
+  policy_number: string | null
+  insured_person: string | null
+  beneficiary: string | null
+  coverage_summary: string | null
+  coverage_amount: number | null
+  premium: number | null
+  premium_cycle: string | null
+  renewal_date: string | null
+  contact_info: string | null
+  notes: string | null
+}
+
+export interface InsuranceInput {
+  subject_user_id?: number | null
+  insurance_type: string
+  company_name: string
+  product_name?: string | null
+  policy_number?: string | null
+  insured_person?: string | null
+  beneficiary?: string | null
+  coverage_summary?: string | null
+  coverage_amount?: number | null
+  premium?: number | null
+  premium_cycle?: string | null
+  renewal_date?: string | null
+  contact_info?: string | null
+  notes?: string | null
+}
+
+export interface InheritanceItem {
+  id: number
+  subject_user_id: number | null
+  subject_display_name: string | null
+  account_id: number | null
+  account_label: string | null
+  title: string
+  contact_info: string | null
+  required_documents: string | null
+  deadline_text: string | null
+  deadline_date: string | null
+  is_done: boolean
+  notes: string | null
+}
+
+export interface InheritanceItemInput {
+  subject_user_id?: number | null
+  account_id?: number | null
+  title: string
+  contact_info?: string | null
+  required_documents?: string | null
+  deadline_text?: string | null
+  deadline_date?: string | null
+  is_done?: boolean
+  notes?: string | null
+}

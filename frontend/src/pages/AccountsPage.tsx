@@ -1,16 +1,18 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useApp } from '../context/AppContext'
-import { accountsApi } from '../api/endpoints'
+import { accountsApi, usersApi } from '../api/endpoints'
 import { ApiError } from '../api/client'
-import type { Account, AccountType } from '../api/types'
+import type { Account, AccountType, User } from '../api/types'
 import { ACCOUNT_TYPES, ACCOUNT_TYPE_LABELS, formatCurrency } from '../constants'
 import { AccountFormDialog } from '../components/AccountFormDialog'
 import { AddBalanceForm } from '../components/AddBalanceForm'
 import { CsvImportDialog } from '../components/CsvImportDialog'
+import { AccountInheritancePanel } from '../components/AccountInheritancePanel'
 
 export function AccountsPage() {
   const { scope } = useApp()
   const [accounts, setAccounts] = useState<Account[]>([])
+  const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -18,12 +20,15 @@ export function AccountsPage() {
   const [editingAccount, setEditingAccount] = useState<Account | null>(null)
   const [balanceFormAccountId, setBalanceFormAccountId] = useState<number | null>(null)
   const [csvAccountId, setCsvAccountId] = useState<number | null>(null)
+  const [inheritanceAccountId, setInheritanceAccountId] = useState<number | null>(null)
 
   const load = useCallback(() => {
     setLoading(true)
-    accountsApi
-      .list(scope)
-      .then(setAccounts)
+    Promise.all([accountsApi.list(scope), usersApi.list()])
+      .then(([accountList, userList]) => {
+        setAccounts(accountList)
+        setUsers(userList)
+      })
       .catch((err) => setError(err instanceof ApiError ? err.message : '読み込みに失敗しました。'))
       .finally(() => setLoading(false))
   }, [scope])
@@ -106,6 +111,14 @@ export function AccountsPage() {
                         CSV取込
                       </button>
                       <button
+                        onClick={() =>
+                          setInheritanceAccountId(inheritanceAccountId === account.id ? null : account.id)
+                        }
+                        className="rounded px-2 py-1 text-indigo-600 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:bg-indigo-950"
+                      >
+                        相続メモ
+                      </button>
+                      <button
                         onClick={() => setEditingAccount(account)}
                         className="rounded px-2 py-1 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
                       >
@@ -130,6 +143,9 @@ export function AccountsPage() {
                         onCancel={() => setBalanceFormAccountId(null)}
                       />
                     </div>
+                  )}
+                  {inheritanceAccountId === account.id && (
+                    <AccountInheritancePanel account={account} accounts={accounts} users={users} />
                   )}
                 </div>
               ))}

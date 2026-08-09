@@ -5,6 +5,10 @@ import type {
   BalanceSnapshot,
   CsvImportPreview,
   CsvImportResult,
+  InheritanceItem,
+  InheritanceItemInput,
+  Insurance,
+  InsuranceInput,
   PortfolioHistory,
   PortfolioSummary,
   Scope,
@@ -17,8 +21,31 @@ export const authApi = {
   me: () => api.get<User>('/api/auth/me'),
 }
 
+export const usersApi = {
+  list: () => api.get<User[]>('/api/users'),
+}
+
+export const insuranceApi = {
+  list: () => api.get<Insurance[]>('/api/insurance'),
+  create: (payload: InsuranceInput) => api.post<Insurance>('/api/insurance', payload),
+  update: (id: number, payload: Partial<InsuranceInput>) => api.put<Insurance>(`/api/insurance/${id}`, payload),
+  remove: (id: number) => api.del<void>(`/api/insurance/${id}`),
+}
+
+export const inheritanceApi = {
+  list: (params?: { accountId?: number }) =>
+    api.get<InheritanceItem[]>(
+      params?.accountId ? `/api/inheritance-items?account_id=${params.accountId}` : '/api/inheritance-items',
+    ),
+  create: (payload: InheritanceItemInput) => api.post<InheritanceItem>('/api/inheritance-items', payload),
+  update: (id: number, payload: Partial<InheritanceItemInput>) =>
+    api.put<InheritanceItem>(`/api/inheritance-items/${id}`, payload),
+  remove: (id: number) => api.del<void>(`/api/inheritance-items/${id}`),
+}
+
 export const accountsApi = {
   list: (scope: Scope) => api.get<Account[]>(`/api/accounts?scope=${scope}`),
+  listAll: () => api.get<Account[]>('/api/accounts'),
   create: (payload: AccountInput) => api.post<Account>('/api/accounts', payload),
   update: (id: number, payload: Partial<AccountInput>) => api.put<Account>(`/api/accounts/${id}`, payload),
   remove: (id: number) => api.del<void>(`/api/accounts/${id}`),

@@ -38,6 +38,14 @@ export const CHART_COLORS = [
   '#8b5cf6',
 ]
 
+export const INSURANCE_TYPES = ['生命保険', '医療保険', 'がん保険', '火災保険', '地震保険', '自動車保険', '学資保険', 'その他']
+
+export const PREMIUM_CYCLE_LABELS: Record<string, string> = {
+  monthly: '月払い',
+  yearly: '年払い',
+  lump_sum: '一括払い',
+}
+
 export function formatCurrency(value: number): string {
   return new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY', maximumFractionDigits: 0 }).format(
     value,

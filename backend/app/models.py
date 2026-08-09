@@ -1,6 +1,7 @@
 import datetime
 
 from sqlalchemy import (
+    Boolean,
     CheckConstraint,
     Date,
     DateTime,
@@ -77,3 +78,50 @@ class BalanceSnapshot(Base):
     )
 
     account: Mapped["Account"] = relationship(back_populates="balances")
+
+
+class Insurance(Base):
+    __tablename__ = "insurances"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    subject_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    insurance_type: Mapped[str] = mapped_column(String(50))
+    company_name: Mapped[str] = mapped_column(String(200))
+    product_name: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    policy_number: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    insured_person: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    beneficiary: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    coverage_summary: Mapped[str | None] = mapped_column(String(2000), nullable=True)
+    coverage_amount: Mapped[float | None] = mapped_column(Numeric(18, 2), nullable=True)
+    premium: Mapped[float | None] = mapped_column(Numeric(18, 2), nullable=True)
+    premium_cycle: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    renewal_date: Mapped[datetime.date | None] = mapped_column(Date, nullable=True)
+    contact_info: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    notes: Mapped[str | None] = mapped_column(String(2000), nullable=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(
+        DateTime, default=datetime.datetime.utcnow
+    )
+    updated_at: Mapped[datetime.datetime] = mapped_column(
+        DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow
+    )
+
+
+class InheritanceItem(Base):
+    __tablename__ = "inheritance_items"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    subject_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    account_id: Mapped[int | None] = mapped_column(ForeignKey("accounts.id"), nullable=True)
+    title: Mapped[str] = mapped_column(String(200))
+    contact_info: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    required_documents: Mapped[str | None] = mapped_column(String(2000), nullable=True)
+    deadline_text: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    deadline_date: Mapped[datetime.date | None] = mapped_column(Date, nullable=True)
+    is_done: Mapped[bool] = mapped_column(Boolean, default=False)
+    notes: Mapped[str | None] = mapped_column(String(2000), nullable=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(
+        DateTime, default=datetime.datetime.utcnow
+    )
+    updated_at: Mapped[datetime.datetime] = mapped_column(
+        DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow
+    )

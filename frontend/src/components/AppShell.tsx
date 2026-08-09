@@ -30,6 +30,12 @@ export function AppShell() {
               <NavLink to="/accounts" className={navLinkClass}>
                 口座管理
               </NavLink>
+              <NavLink to="/insurance" className={navLinkClass}>
+                保険
+              </NavLink>
+              <NavLink to="/inheritance" className={navLinkClass}>
+                相続
+              </NavLink>
             </nav>
           </div>
           <div className="flex items-center gap-3">

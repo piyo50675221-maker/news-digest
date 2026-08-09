@@ -126,3 +126,113 @@ class NetWorthHistoryPoint(BaseModel):
 
 class PortfolioHistory(BaseModel):
     points: list[NetWorthHistoryPoint]
+
+
+class InsuranceCreate(BaseModel):
+    subject_user_id: int | None = None
+    insurance_type: str
+    company_name: str
+    product_name: str | None = None
+    policy_number: str | None = None
+    insured_person: str | None = None
+    beneficiary: str | None = None
+    coverage_summary: str | None = None
+    coverage_amount: float | None = None
+    premium: float | None = None
+    premium_cycle: str | None = None
+    renewal_date: datetime.date | None = None
+    contact_info: str | None = None
+    notes: str | None = None
+
+    @field_validator("company_name", "insurance_type")
+    @classmethod
+    def not_blank(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("must not be blank")
+        return v.strip()
+
+
+class InsuranceUpdate(BaseModel):
+    subject_user_id: int | None = None
+    insurance_type: str | None = None
+    company_name: str | None = None
+    product_name: str | None = None
+    policy_number: str | None = None
+    insured_person: str | None = None
+    beneficiary: str | None = None
+    coverage_summary: str | None = None
+    coverage_amount: float | None = None
+    premium: float | None = None
+    premium_cycle: str | None = None
+    renewal_date: datetime.date | None = None
+    contact_info: str | None = None
+    notes: str | None = None
+
+
+class InsuranceOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    subject_user_id: int | None
+    subject_display_name: str | None = None
+    insurance_type: str
+    company_name: str
+    product_name: str | None
+    policy_number: str | None
+    insured_person: str | None
+    beneficiary: str | None
+    coverage_summary: str | None
+    coverage_amount: float | None
+    premium: float | None
+    premium_cycle: str | None
+    renewal_date: datetime.date | None
+    contact_info: str | None
+    notes: str | None
+
+
+class InheritanceItemCreate(BaseModel):
+    subject_user_id: int | None = None
+    account_id: int | None = None
+    title: str
+    contact_info: str | None = None
+    required_documents: str | None = None
+    deadline_text: str | None = None
+    deadline_date: datetime.date | None = None
+    is_done: bool = False
+    notes: str | None = None
+
+    @field_validator("title")
+    @classmethod
+    def not_blank(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("must not be blank")
+        return v.strip()
+
+
+class InheritanceItemUpdate(BaseModel):
+    subject_user_id: int | None = None
+    account_id: int | None = None
+    title: str | None = None
+    contact_info: str | None = None
+    required_documents: str | None = None
+    deadline_text: str | None = None
+    deadline_date: datetime.date | None = None
+    is_done: bool | None = None
+    notes: str | None = None
+
+
+class InheritanceItemOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    subject_user_id: int | None
+    subject_display_name: str | None = None
+    account_id: int | None
+    account_label: str | None = None
+    title: str
+    contact_info: str | None
+    required_documents: str | None
+    deadline_text: str | None
+    deadline_date: datetime.date | None
+    is_done: bool
+    notes: str | None
